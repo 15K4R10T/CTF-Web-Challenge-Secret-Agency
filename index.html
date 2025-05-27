@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Intelligence Division</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a1a, #1e1e3f);
+            color: #00ccff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .container {
+            background: rgba(5, 5, 15, 0.95);
+            border: 2px solid #00ccff;
+            border-radius: 15px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 204, 255, 0.4);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px #00ccff;
+            animation: pulse 2s infinite;
+        }
+        
+        .title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 0.9rem;
+        }
+        
+        .access-panel {
+            margin-bottom: 30px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ccff;
+            color: #00ccff;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+            border-color: #00ffff;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #00ccff, #0099cc);
+            color: #000;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 15px 5px;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(45deg, #00ffff, #00cccc);
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .diagnostic {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 30px;
+            font-style: italic;
+        }
+        
+        .scanner {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ccff, transparent);
+            animation: scan 3s infinite;
+            margin: 20px 0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .hidden-layer {
+            position: absolute;
+            top: -1000px;
+            left: -1000px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .matrix-rain {
+            position: absolute;
+            color: #00ff00;
+            font-size: 10px;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
+    <div class="container">
+        <div class="logo">🛡️</div>
+        <h1 class="title">NEXUS INTELLIGENCE</h1>
+        <p class="subtitle">Neural Extraction & Xenon Ultra Systems</p>
+        
+        <div class="scanner"></div>
+        
+        <div class="access-panel">
+            <input type="text" id="agentId" placeholder="Agent Identification Code" />
+            <input type="password" id="authToken" placeholder="Authentication Token" />
+            <button class="btn" onclick="validateAccess()">Initialize Access</button>
+        </div>
+        
+        <button class="btn" id="diagnosticBtn" onclick="runDiagnostic()">System Diagnostic</button>
+        
+        <div class="diagnostic">
+            🔍 System Status: Operational | Security Level: Maximum
+        </div>
+    </div>
+    
+    <div class="hidden-layer">
+        <div id="dataVault"></div>
+        <div id="encryptedPayload"></div>
+        <div id="systemCore"></div>
+    </div>
+    
+    <script>
+        // Matrix background effect
+        function initMatrix() {
+            const canvas = document.getElementById('matrix');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(10, 10, 26, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#00ff00';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 50);
+        }
+        
+        // Initialize matrix on load
+        window.onload = function() {
+            initMatrix();
+            setupChallenge();
+        };
+        
+        // Obfuscated challenge setup
+        function setupChallenge() {
+            const keySequence = [73, 68, 78, 95, 70, 76, 65, 71, 123];
+            const payload = [115, 101, 99, 114, 101, 116, 95, 97, 103, 101, 110, 116, 95, 100, 97, 116, 97, 98, 97, 115, 101, 95, 97, 99, 99, 101, 115, 115, 95, 103, 114, 97, 110, 116, 101, 100, 125];
+            
+            const vault = document.getElementById('dataVault');
+            vault.setAttribute('data-encrypted', btoa(String.fromCharCode(...keySequence) + String.fromCharCode(...payload)));
+            
+            // Secondary layer
+            const systemCore = document.getElementById('systemCore');
+            systemCore.innerHTML = '<!-- System Core: Classified Data Storage -->';
+            
+            // Triple encoding
+            const encPayload = document.getElementById('encryptedPayload');
+            const tripleEnc = btoa(btoa(btoa('NEXUS_ACCESS_GRANTED')));
+            encPayload.setAttribute('data-core', tripleEnc);
+        }
+        
+        let attemptCount = 0;
+        const maxAttempts = 3;
+        
+        function validateAccess() {
+            const agentId = document.getElementById('agentId').value;
+            const authToken = document.getElementById('authToken').value;
+            
+            attemptCount++;
+            
+            if (attemptCount >= maxAttempts) {
+                document.body.style.background = 'linear-gradient(135deg, #ff0000, #660000)';
+                alert('🚨 SECURITY BREACH DETECTED! System lockdown initiated.');
+                setTimeout(() => {
+                    document.body.innerHTML = '<div style="color: red; text-align: center; margin-top: 50vh; font-family: monospace; font-size: 2rem;">ACCESS TERMINATED</div>';
+                }, 2000);
+                return;
+            }
+            
+            // Red herring credentials
+            if (agentId.toLowerCase() === 'admin' && authToken === 'password123') {
+                alert('❌ Nice try, but that\'s too obvious for a secret agent!');
+                return;
+            }
+            
+            if (agentId === 'NX-7749' && authToken === 'QUANTUM_CIPHER_2024') {
+                document.body.style.background = 'linear-gradient(135deg, #00ff00, #004400)';
+                alert('🎯 ACCESS GRANTED! Welcome, Agent.');
+                
+                // Reveal the real challenge
+                setTimeout(() => {
+                    alert('🔓 Now you must prove your skills. Find the hidden vault in the system core...');
+                    document.getElementById('diagnosticBtn').disabled = false;
+                    document.getElementById('diagnosticBtn').innerText = 'UNLOCK VAULT';
+                }, 1500);
+            } else {
+                alert(`❌ Access Denied! Invalid credentials. ${maxAttempts - attemptCount} attempts remaining.`);
+            }
+        }
+        
+        function runDiagnostic() {
+            const vault = document.getElementById('dataVault');
+            const encryptedData = vault.getAttribute('data-encrypted');
+            
+            if (encryptedData) {
+                try {
+                    const decrypted = atob(encryptedData);
+                    alert('🎉 Vault Unlocked! Flag Found: ' + decrypted);
+                    
+                    // Victory animation
+                    document.body.style.background = 'linear-gradient(135deg, #ffd700, #ff8c00)';
+                    document.querySelector('.container').style.boxShadow = '0 0 100px rgba(255, 215, 0, 0.8)';
+                } catch (e) {
+                    alert('❌ Decryption failed! Try again.');
+                }
+            } else {
+                alert('🔍 System diagnostic complete. No anomalies detected.');
+            }
+        }
+        
+        // Anti-inspection measures
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('🚫 Developer tools detected! Security protocol activated.');
+                return false;
+            }
+        });
+        
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('🚫 Right-click disabled for security reasons.');
+        });
+        
+        // Console trap
+        Object.defineProperty(window, 'console', {
+            get: function() {
+                alert('🚫 Console access restricted!');
+                return { log: function() {} };
+            }
+        });
+    </script>
+</body>
+</html>
