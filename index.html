@@ -164,7 +164,9 @@
     <div class="container">
         <div class="logo">🛡️</div>
         <h1 class="title">NEXUS INTELLIGENCE</h1>
-        <p class="subtitle">Neural Extraction & Xenon Ultra Systems</p>
+        <p class="subtitle">Neural Extraction & Xenon Ultra Systems<br><br>
+        by I5K4RI0T_
+        </p>
         
         <div class="scanner"></div>
         
@@ -174,7 +176,7 @@
             <button class="btn" onclick="validateAccess()">Initialize Access</button>
         </div>
         
-        <button class="btn" id="diagnosticBtn" onclick="runDiagnostic()">System Diagnostic</button>
+        <button class="btn" id="diagnosticBtn" onclick="runDiagnostic()" style="display: none;">System Diagnostic</button>
         
         <div class="diagnostic">
             🔍 System Status: Operational | Security Level: Maximum
@@ -188,148 +190,9 @@
     </div>
     
     <script>
-        // Matrix background effect
-        function initMatrix() {
-            const canvas = document.getElementById('matrix');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = [];
-            
-            for (let i = 0; i < columns; i++) {
-                drops[i] = 1;
-            }
-            
-            function draw() {
-                ctx.fillStyle = 'rgba(10, 10, 26, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.fillStyle = '#00ff00';
-                ctx.font = fontSize + 'px monospace';
-                
-                for (let i = 0; i < drops.length; i++) {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
-            }
-            
-            setInterval(draw, 50);
-        }
-        
-        // Initialize matrix on load
-        window.onload = function() {
-            initMatrix();
-            setupChallenge();
-        };
-        
-        // Obfuscated challenge setup
-        function setupChallenge() {
-            const keySequence = [73, 68, 78, 95, 70, 76, 65, 71, 123];
-            const payload = [115, 101, 99, 114, 101, 116, 95, 97, 103, 101, 110, 116, 95, 100, 97, 116, 97, 98, 97, 115, 101, 95, 97, 99, 99, 101, 115, 115, 95, 103, 114, 97, 110, 116, 101, 100, 125];
-            
-            const vault = document.getElementById('dataVault');
-            vault.setAttribute('data-encrypted', btoa(String.fromCharCode(...keySequence) + String.fromCharCode(...payload)));
-            
-            // Secondary layer
-            const systemCore = document.getElementById('systemCore');
-            systemCore.innerHTML = '<!-- System Core: Classified Data Storage -->';
-            
-            // Triple encoding
-            const encPayload = document.getElementById('encryptedPayload');
-            const tripleEnc = btoa(btoa(btoa('NEXUS_ACCESS_GRANTED')));
-            encPayload.setAttribute('data-core', tripleEnc);
-        }
-        
-        let attemptCount = 0;
-        const maxAttempts = 3;
-        
-        function validateAccess() {
-            const agentId = document.getElementById('agentId').value;
-            const authToken = document.getElementById('authToken').value;
-            
-            attemptCount++;
-            
-            if (attemptCount >= maxAttempts) {
-                document.body.style.background = 'linear-gradient(135deg, #ff0000, #660000)';
-                alert('🚨 SECURITY BREACH DETECTED! System lockdown initiated.');
-                setTimeout(() => {
-                    document.body.innerHTML = '<div style="color: red; text-align: center; margin-top: 50vh; font-family: monospace; font-size: 2rem;">ACCESS TERMINATED</div>';
-                }, 2000);
-                return;
-            }
-            
-            // Red herring credentials
-            if (agentId.toLowerCase() === 'admin' && authToken === 'password123') {
-                alert('❌ Nice try, but that\'s too obvious for a secret agent!');
-                return;
-            }
-            
-            if (agentId === 'NX-7749' && authToken === 'QUANTUM_CIPHER_2024') {
-                document.body.style.background = 'linear-gradient(135deg, #00ff00, #004400)';
-                alert('🎯 ACCESS GRANTED! Welcome, Agent.');
-                
-                // Reveal the real challenge
-                setTimeout(() => {
-                    alert('🔓 Now you must prove your skills. Find the hidden vault in the system core...');
-                    document.getElementById('diagnosticBtn').disabled = false;
-                    document.getElementById('diagnosticBtn').innerText = 'UNLOCK VAULT';
-                }, 1500);
-            } else {
-                alert(`❌ Access Denied! Invalid credentials. ${maxAttempts - attemptCount} attempts remaining.`);
-            }
-        }
-        
-        function runDiagnostic() {
-            const vault = document.getElementById('dataVault');
-            const encryptedData = vault.getAttribute('data-encrypted');
-            
-            if (encryptedData) {
-                try {
-                    const decrypted = atob(encryptedData);
-                    alert('🎉 Vault Unlocked! Flag Found: ' + decrypted);
-                    
-                    // Victory animation
-                    document.body.style.background = 'linear-gradient(135deg, #ffd700, #ff8c00)';
-                    document.querySelector('.container').style.boxShadow = '0 0 100px rgba(255, 215, 0, 0.8)';
-                } catch (e) {
-                    alert('❌ Decryption failed! Try again.');
-                }
-            } else {
-                alert('🔍 System diagnostic complete. No anomalies detected.');
-            }
-        }
-        
-        // Anti-inspection measures
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                e.preventDefault();
-                alert('🚫 Developer tools detected! Security protocol activated.');
-                return false;
-            }
-        });
-        
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            alert('🚫 Right-click disabled for security reasons.');
-        });
-        
-        // Console trap
-        Object.defineProperty(window, 'console', {
-            get: function() {
-                alert('🚫 Console access restricted!');
-                return { log: function() {} };
-            }
-        });
+
+        const _0x9cada8=_0x24eb;(function(_0x43e378,_0x35f1e2){const _0xfcb74c=_0x24eb,_0x2498a5=_0x43e378();while(!![]){try{const _0x9e95cc=-parseInt(_0xfcb74c(0x12e))/0x1*(-parseInt(_0xfcb74c(0x114))/0x2)+-parseInt(_0xfcb74c(0x12d))/0x3*(parseInt(_0xfcb74c(0x10c))/0x4)+parseInt(_0xfcb74c(0xee))/0x5*(-parseInt(_0xfcb74c(0x107))/0x6)+-parseInt(_0xfcb74c(0x126))/0x7*(parseInt(_0xfcb74c(0x110))/0x8)+-parseInt(_0xfcb74c(0x138))/0x9*(-parseInt(_0xfcb74c(0xf3))/0xa)+-parseInt(_0xfcb74c(0x125))/0xb*(-parseInt(_0xfcb74c(0x10d))/0xc)+-parseInt(_0xfcb74c(0x120))/0xd*(-parseInt(_0xfcb74c(0x135))/0xe);if(_0x9e95cc===_0x35f1e2)break;else _0x2498a5['push'](_0x2498a5['shift']());}catch(_0x52e604){_0x2498a5['push'](_0x2498a5['shift']());}}}(_0x205c,0x9559b));function initMatrix(){const _0xb88e6f=_0x24eb,_0x4b6033=document[_0xb88e6f(0x122)]('matrix'),_0x478809=_0x4b6033[_0xb88e6f(0x137)]('2d');_0x4b6033[_0xb88e6f(0x11a)]=window[_0xb88e6f(0x121)],_0x4b6033[_0xb88e6f(0xfe)]=window[_0xb88e6f(0x133)];const _0x306cfb=_0xb88e6f(0x116),_0x4c76df=0xe,_0xaddc0d=_0x4b6033[_0xb88e6f(0x11a)]/_0x4c76df,_0x39c4be=[];for(let _0x251c15=0x0;_0x251c15<_0xaddc0d;_0x251c15++){_0x39c4be[_0x251c15]=0x1;}function _0x2c0ace(){const _0x19e141=_0xb88e6f;_0x478809[_0x19e141(0x12c)]=_0x19e141(0x136),_0x478809[_0x19e141(0x10a)](0x0,0x0,_0x4b6033[_0x19e141(0x11a)],_0x4b6033[_0x19e141(0xfe)]),_0x478809[_0x19e141(0x12c)]='#00ff00',_0x478809[_0x19e141(0xf4)]=_0x4c76df+'px\x20monospace';for(let _0x1dfecc=0x0;_0x1dfecc<_0x39c4be['length'];_0x1dfecc++){const _0x33cabe=_0x306cfb[Math['floor'](Math[_0x19e141(0x10b)]()*_0x306cfb[_0x19e141(0xf8)])];_0x478809[_0x19e141(0x115)](_0x33cabe,_0x1dfecc*_0x4c76df,_0x39c4be[_0x1dfecc]*_0x4c76df),_0x39c4be[_0x1dfecc]*_0x4c76df>_0x4b6033[_0x19e141(0xfe)]&&Math[_0x19e141(0x10b)]()>0.975&&(_0x39c4be[_0x1dfecc]=0x0),_0x39c4be[_0x1dfecc]++;}}setInterval(_0x2c0ace,0x32);}function _0x205c(){const _0x379a04=['552nhHBXq','🚫\x20Right-click\x20disabled\x20for\x20security\x20reasons.','shiftKey','410888tMHKwI','systemCore','querySelector','❌\x20Decryption\x20failed!\x20Try\x20again.','32aTHHXH','fillText','01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン','dataVault','agentId','data-core','width','<div\x20style=\x22color:\x20red;\x20text-align:\x20center;\x20margin-top:\x2050vh;\x20font-family:\x20monospace;\x20font-size:\x202rem;\x22>ACCESS\x20TERMINATED</div>','🔓\x20Now\x20you\x20must\x20prove\x20your\x20skills.\x20Find\x20the\x20hidden\x20vault\x20in\x20the\x20system\x20core...','contextmenu','authToken','0\x200\x20100px\x20rgba(255,\x20215,\x200,\x200.8)','884xlswwj','innerWidth','getElementById','linear-gradient(135deg,\x20#00ff00,\x20#004400)','🎉\x20Vault\x20Unlocked!\x20Flag\x20Found:\x20','62579detsEq','35lYyFJL','🔍\x20System\x20diagnostic\x20complete.\x20No\x20anomalies\x20detected.','data-encrypted','<!--\x20System\x20Core:\x20Classified\x20Data\x20Storage\x20-->','ctrlKey','disabled','fillStyle','2655141JeRUiq','29723sBDXKB','setAttribute','🎯\x20ACCESS\x20GRANTED!\x20Welcome,\x20Agent.','background','addEventListener','innerHeight','body','354256eLPaPc','rgba(10,\x2010,\x2026,\x200.05)','getContext','11646SQEOrR','load','181565MltfwA','🚨\x20SECURITY\x20BREACH\x20DETECTED!\x20System\x20lockdown\x20initiated.','❌\x20Nice\x20try,\x20but\x20that\x27s\x20too\x20obvious\x20for\x20a\x20secret\x20agent!','loads','getAttribute','450CptQYn','font','🚫\x20Developer\x20tools\x20detected!\x20Security\x20protocol\x20activated.','innerHTML','keydown','length','UNLOCK\x20VAULT','MFSG22LO','innerText','console','diagnosticBtn','height','oldfuntion','fromCharCode','.container','style','\x20attempts\x20remaining.','value','defineProperty','preventDefault','126XjcDVM','key','encryptedPayload','fillRect','random','4hhMTsd'];_0x205c=function(){return _0x379a04;};return _0x205c();}window['onload']=function(){initMatrix(),setupChallenge();};function _0x24eb(_0x16d2d8,_0x29c113){const _0x205c54=_0x205c();return _0x24eb=function(_0x24ebfe,_0x502435){_0x24ebfe=_0x24ebfe-0xee;let _0x1079a9=_0x205c54[_0x24ebfe];return _0x1079a9;},_0x24eb(_0x16d2d8,_0x29c113);}function setupChallenge(){const _0x70b258=_0x24eb,_0x22aeb8=[0x49,0x44,0x4e,0x5f,0x46,0x4c,0x41,0x47,0x7b],_0x3956b6=[0x73,0x65,0x63,0x72,0x65,0x74,0x5f,0x61,0x67,0x65,0x6e,0x74,0x5f,0x64,0x61,0x74,0x61,0x62,0x61,0x73,0x65,0x5f,0x61,0x63,0x63,0x65,0x73,0x73,0x5f,0x67,0x72,0x61,0x6e,0x74,0x65,0x64,0x7d],_0x1b0dce=document[_0x70b258(0x122)](_0x70b258(0x117));_0x1b0dce[_0x70b258(0x12f)](_0x70b258(0x128),btoa(String[_0x70b258(0x100)](..._0x22aeb8)+String['fromCharCode'](..._0x3956b6)));const _0x37b208=document[_0x70b258(0x122)](_0x70b258(0x111));_0x37b208[_0x70b258(0xf6)]=_0x70b258(0x129);const _0x466d9b=document[_0x70b258(0x122)](_0x70b258(0x109)),_0x2121bc=btoa(btoa(btoa('NEXUS_ACCESS_GRANTED')));_0x466d9b[_0x70b258(0x12f)](_0x70b258(0x119),_0x2121bc);}let attemptCount=0x0;const maxAttempts=0x3;function validateAccess(){const _0x233fb8=_0x24eb,_0x4dc0b0=document[_0x233fb8(0x122)](_0x233fb8(0x118))[_0x233fb8(0x104)],_0x2ead59=document[_0x233fb8(0x122)](_0x233fb8(0x11e))['value'];attemptCount++;if(attemptCount>=maxAttempts){document[_0x233fb8(0x134)][_0x233fb8(0x102)][_0x233fb8(0x131)]='linear-gradient(135deg,\x20#ff0000,\x20#660000)',alert(_0x233fb8(0xef)),setTimeout(()=>{const _0xc0fe8b=_0x233fb8;document[_0xc0fe8b(0x134)][_0xc0fe8b(0xf6)]=_0xc0fe8b(0x11b);},0x7d0);return;}if(_0x4dc0b0['toLowerCase']()===_0x233fb8(0xfa)&&_0x2ead59===_0x233fb8(0xf1)){alert(_0x233fb8(0xf0));return;}_0x4dc0b0===_0x233fb8(0x139)&&_0x2ead59===_0x233fb8(0xff)?(document[_0x233fb8(0x134)][_0x233fb8(0x102)]['background']=_0x233fb8(0x123),alert(_0x233fb8(0x130)),setTimeout(()=>{const _0x13368f=_0x233fb8;alert(_0x13368f(0x11c)),document[_0x13368f(0x122)](_0x13368f(0xfd))[_0x13368f(0x12b)]=![],document[_0x13368f(0x122)]('diagnosticBtn')[_0x13368f(0xfb)]=_0x13368f(0xf9);},0x5dc)):alert('❌\x20Access\x20Denied!\x20Invalid\x20credentials.\x20'+(maxAttempts-attemptCount)+_0x233fb8(0x103));}function runDiagnostic(){const _0x452e2a=_0x24eb,_0x5842ed=document[_0x452e2a(0x122)](_0x452e2a(0x117)),_0x23f6e8=_0x5842ed[_0x452e2a(0xf2)]('data-encrypted');if(_0x23f6e8)try{const _0x17286d=atob(_0x23f6e8);alert(_0x452e2a(0x124)+_0x17286d),document[_0x452e2a(0x134)][_0x452e2a(0x102)][_0x452e2a(0x131)]='linear-gradient(135deg,\x20#ffd700,\x20#ff8c00)',document[_0x452e2a(0x112)](_0x452e2a(0x101))['style']['boxShadow']=_0x452e2a(0x11f);}catch(_0x1d01db){alert(_0x452e2a(0x113));}else alert(_0x452e2a(0x127));}document[_0x9cada8(0x132)](_0x9cada8(0xf7),function(_0x29e114){const _0x139192=_0x9cada8;if(_0x29e114[_0x139192(0x108)]==='F12'||_0x29e114[_0x139192(0x12a)]&&_0x29e114[_0x139192(0x10f)]&&_0x29e114['key']==='I')return _0x29e114[_0x139192(0x106)](),alert(_0x139192(0xf5)),![];}),document[_0x9cada8(0x132)](_0x9cada8(0x11d),function(_0x4219fc){const _0xe0796b=_0x9cada8;_0x4219fc[_0xe0796b(0x106)](),alert(_0xe0796b(0x10e));}),Object[_0x9cada8(0x105)](window,_0x9cada8(0xfc),{'get':function(){return alert('🚫\x20Console\x20access\x20restricted!'),{'log':function(){}};}});
+
     </script>
 </body>
 </html>
